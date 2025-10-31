@@ -72,7 +72,7 @@
             </div>
         </div>
     </div>
-    <div class="container mt-4">
+    <div class="container mt-4" v-if="statusTabla">
         <table class="table">
             <thead>
                 <tr>
@@ -92,13 +92,17 @@
             </tbody>
         </table>
     </div>
+    <div class="container mt-4" v-else>
+        <img src="./../assets/loading.gif"/>
+    </div>
 </template>
 
 <script>
-    import Global from './../Global.js'
-    import axios from 'axios'
-    let urlCustomers = Global.urlCustomers
-
+    // import Global from './../Global.js'
+    // import axios from 'axios'
+    // let urlCustomers = Global.urlCustomers
+    import ServiceCustomers from './../services/ServiceCustomers'
+    const service = new ServiceCustomers()
     export default {
         name: "CustomersComponent",
         data(){
@@ -106,29 +110,23 @@
                 customers: [],
                 customerDetalles: null, 
                 idCustomerDetalles: "",
-                status: false
+                status: false,
+                statusTabla: false,
             }
         }, 
         mounted(){
-            axios.get(urlCustomers).then(response =>{
-                this.customers = response.data.value
+            service.getCustomers().then(response =>{
+                this.customers = response
+                this.statusTabla = true
             })  
         }, 
         methods: {
             getCustomer(id) {
-                axios.get(urlCustomers).then(response =>{
-                let customers = response.data.value
-                for (const customer of customers) {
-                    if(customer.CustomerID == id){
-                        this.customerDetalles = customer
-                        this.status = true
-                        return
-                    } else {
-                        this.customerDetalles = null
-                        this.status = true                        
-                    }
-                }                
-            })  
+                service.getCustomer(id).then(response => {
+                    this.customerDetalles = response
+                    console.log(this.customerDetalles)
+                    this.status = true
+                })
             }
         }
     }

@@ -50,10 +50,11 @@
 </template>
 
 <script>
-    import Global from './../Global';
-    import axios from 'axios'
-
-    let urlEmpleados = Global.urlEmpleados;
+    // import Global from './../Global';
+    // import axios from 'axios'
+    import ServiceEmpleados from './../services/ServiceEmpleados'
+    let service = new ServiceEmpleados()
+    // let urlEmpleados = Global.urlEmpleados;
 
     export default{
         
@@ -66,17 +67,14 @@
             }
         }, 
         mounted(){
-            let request = "api/empleados";
-            axios.get(urlEmpleados+request).then(response => {
-                console.log(response.data)
-                this.empleados = response.data
+            service.getEmpleados().then(response => {
+                this.empleados = response
             })
         }, 
         methods: {
             getEmpleado(id) {
-                let request = "api/empleados/"+id;
-                axios.get(urlEmpleados+request).then(response => {
-                    this.empleadoDetalles = response.data
+                service.getEmpleado(id).then(response => {
+                    this.empleadoDetalles = response
                 })
             }
         }

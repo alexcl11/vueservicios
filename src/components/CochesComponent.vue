@@ -24,10 +24,14 @@
     </div>
 </template>
 
-<script>
-import axios from 'axios'
-import Global from './../Global.js'
-let urlApi = Global.urlApi;
+// <script>
+// import axios from 'axios'
+// import Global from './../Global.js'
+import ServiceCoche from './../services/ServiceCoche'
+
+let service = new ServiceCoche()
+
+// let urlApi = Global.urlApi;
     export default{
         name: "CochesComponent", 
         data(){
@@ -36,12 +40,17 @@ let urlApi = Global.urlApi;
             }
         },
         mounted(){
-            let request = "webresources/coches";
-            //  LAS VARIABLES DECLARARDAS FUERA DEL NO EXPORT UTILIZAN this
-
-            axios.get(urlApi+request).then(response => {
-                this.coches = response.data
+            //UNA PROMESA NO ES UN MÉTODO, ES UN OBJETO
+            service.getCoches().then(response => {
+                this.coches = response
             })
+
+            // let request = "webresources/coches";
+            // //  LAS VARIABLES DECLARARDAS FUERA DEL NO EXPORT UTILIZAN this
+
+            // axios.get(urlApi+request).then(response => {
+            //     this.coches = response.data
+            // })
         }
     }
 </script>

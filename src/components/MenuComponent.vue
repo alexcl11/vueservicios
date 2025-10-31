@@ -9,7 +9,21 @@
             <ul class="navbar-nav me-auto mb-2 mb-lg-0" >
                 <li class="nav-item">
                 <router-link class="nav-link active" aria-current="page" to='/coches'>Coches</router-link>
-                </li>                
+                </li> 
+                <li class="nav-item">
+                <router-link class="nav-link active" aria-current="page" to='/empleados'>Empleados</router-link>
+                </li> 
+                <li class="nav-item">
+                <router-link class="nav-link active" aria-current="page" to='/customers'>Customers</router-link>
+                </li>       
+                <li class="nav-item dropdown">
+                    <router-link class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Oficios
+                    </router-link>
+                    <ul class="dropdown-menu" >
+                        <li v-for="oficio in oficios" :key="oficio"><router-link class="dropdown-item" :to="`/empleadosoficio/${oficio}`">{{oficio}}</router-link></li>
+                    </ul>
+                </li>         
             </ul>
             </div>
         </div>
@@ -17,7 +31,25 @@
 </template>
 
 <script>
+import ServiceEmpleados from '@/services/ServiceEmpleados'
+    // import Global from './../Global'
+    // import axios from 'axios'
+
+    // let urlEmpleados = Global.urlEmpleados
+
+    const service = new ServiceEmpleados()
+
     export default{
-        name:"MenuComponent"
+        name:"MenuComponent",
+        data(){
+            return{
+                oficios: []
+            }
+        }, 
+        mounted(){
+            service.getOficios().then(response => {
+                this.oficios = response
+            })
+        }
     }
 </script>
